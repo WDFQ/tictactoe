@@ -8,7 +8,7 @@ export default function Board() {
         const arrayCopy = squares.slice()
 
         // if piece exist on i, skip
-        if (squares[i]) {
+        if (squares[i] != null || calculateWinner[squares]) {
             return
         }
 
@@ -19,15 +19,25 @@ export default function Board() {
         }
 
         setSquares(arrayCopy)
-        if (calculateWinner(arrayCopy)) {
-            window.alert('game over')
-        }
-
         setXIsNext(!xIsNext)
+    }
+
+    const winner = calculateWinner(squares)
+
+    let gameStatus = ''
+    if (winner) {
+        gameStatus = `Winner: ${winner}`
+    } else {
+        if (xIsNext) {
+            gameStatus = `Next player: X`
+        } else {
+            gameStatus = `Next player: O`
+        }
     }
 
     return (
         <>
+            <div className="status">{gameStatus}</div>
             <div className="board-row">
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
                 <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
